@@ -1,0 +1,236 @@
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>PRODUCT</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+                            <li class="breadcrumb-item"><a href="#">Product</a></li>
+                            <li class="breadcrumb-item active">Data table</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal"
+                    data-bs-target="#createProductModal">
+                    <i class="fa fa-plus"></i> Ürün Ekle
+                </button>
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">PRODUCT LIST</strong>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Image</th>
+                                    <th>Category</th>
+                                    <th>IsActive</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>@item.Title</td>
+                                    <td
+                                        style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        @item.Description</td>
+                                    <td>
+                                        <img src="@item.Image" alt="Product image" width="80" height="80"
+                                            class="img-thumbnail" />
+                                    </td>
+                                    <td>@item.Category?.Name</td>
+                                    <td>
+                                        <span class="badge bg-@(item.IsActive ? " success" : "danger" )">
+                                            @(item.IsActive ? "Active" : "Passive")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal"
+                                            data-bs-target="#editProductModal" data-id="@item.Id"
+                                            data-title="@item.Title" data-description="@item.Description"
+                                            data-image="@item.Image" data-categoryid="@item.CategoryId"
+                                            data-isactive="@item.IsActive">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#deleteProductModal" data-id="@item.Id">
+                                            <i class="fa fa-trash"></i> Sil
+                                        </button>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modals -->
+
+<!-- Create Modal -->
+<div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Create" enctype="multipart/form-data">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="createProductModalLabel">
+                        <i class="fa fa-plus-circle me-2"></i>Yeni Ürün Ekle
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label for="productTitle" class="form-label fw-bold">Başlık</label>
+                        <input type="text" class="form-control" id="productTitle" name="Title" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="productDescription" class="form-label fw-bold">Açıklama</label>
+                        <textarea class="form-control" id="productDescription" name="Description" rows="8"
+                            required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productImage" class="form-label fw-bold">Resim Yükle</label>
+                        <input type="file" class="form-control" id="productImage" name="ImageFile" accept="image/*"
+                            required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="productCategory" class="form-label fw-bold">Kategori</label>
+                        <select class="form-select" id="productCategory" name="CategoryId">
+                            
+                            @foreach (var cat in ViewBag.Categories as List<PastryShop.Models.Category>)
+                                {
+                                <option value="@cat.Id">@cat.Name</option>
+                                }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productIsActive" class="form-label fw-bold">Aktif mi?</label>
+                        <select class="form-select" id="productIsActive" name="IsActive">
+                            <option value="true">Evet</option>
+                            <option value="false">Hayır</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-check me-1"></i>Ekle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Edit" enctype="multipart/form-data">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="editProductModalLabel">
+                        <i class="fa fa-edit me-2"></i>Ürün Düzenle
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" name="Id" id="editProductId" />
+                    <div class="mb-3">
+                        <label for="editProductTitle" class="form-label fw-bold">Başlık</label>
+                        <input type="text" class="form-control" id="editProductTitle" name="Title" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductDescription" class="form-label fw-bold">Açıklama</label>
+                        <textarea class="form-control" id="editProductDescription" name="Description" rows="8"
+                            required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productImage" class="form-label fw-bold">Resim Yükle</label>
+                        <input type="file" class="form-control" id="productImage" name="ImageFile" accept="image/*" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductCategory" class="form-label fw-bold">Kategori</label>
+                        <select class="form-select" id="editProductCategory" name="CategoryId">
+                            @foreach (var cat in ViewBag.Categories as List<PastryShop.Models.Category>)
+                                {
+                                <option value="@cat.Id">@cat.Name</option>
+                                }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductIsActive" class="form-label fw-bold">Aktif mi?</label>
+                        <select class="form-select" id="editProductIsActive" name="IsActive">
+                            <option value="true">Evet</option>
+                            <option value="false">Hayır</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save me-1"></i>Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Delete">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteProductModalLabel">
+                        <i class="fa fa-trash me-2"></i>Silme Onayı
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="fs-5 text-center">
+                        Bu ürünü silmek istediğinize emin misiniz?
+                    </p>
+                    <input type="hidden" name="Id" id="deleteProductId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash me-1"></i>Sil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
