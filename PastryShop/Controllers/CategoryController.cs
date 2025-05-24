@@ -18,7 +18,7 @@ namespace PastryShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View("~/Views/Admin/Category/Index.cshtml", await _context.Categories.ToListAsync());
         }
 
         // Create
