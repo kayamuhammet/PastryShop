@@ -1,0 +1,248 @@
+@model IEnumerable<PastryShop.Models.Slider>
+
+@{
+    ViewData["Title"] = "Slider";
+}
+
+
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>SLIDER</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Admin</a></li>
+                            <li class="breadcrumb-item"><a asp-controller="Slider" asp-action="Index">Slider</a></li>
+                            <li class="breadcrumb-item active">Tablo</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="fa fa-plus"></i> Slider Ekle
+                </button>
+                <div class="card">
+
+                    <div class="card-header">
+                        <strong class="card-title">SLIDER LİSTESİ</strong>
+                    </div>
+
+                    <div class="card-body">
+                        <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Başlık</th>
+                                    <th>Açıklama</th>
+                                    <th>Sıra</th>
+                                    <th>Border Color</th>
+                                    <th>Background Color</th>
+                                    <th>Durum</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Title</td>
+                                        <td
+                                            style="max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            @item.Description</td>
+                                        <td>@item.Order</td>
+                                        <td>@item.BorderColor</td>
+                                        <td>@item.BackgroundColor</td>
+                                        <td>
+                                            <span class="badge bg-@(item.IsActive ? " success" : "danger")">
+                                                @item.IsActive
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal"
+                                                data-bs-target="#editModal" data-id="@item.Id" data-title="@item.Title"
+                                                data-description="@item.Description" data-order="@item.Order" data-bordercolor="@item.BorderColor"
+                                                data-backgroundcolor="@item.BackgroundColor"
+                                                data-isactive="@item.IsActive">
+                                                <i class="fa fa-edit"></i> Düzenle
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" data-id="@item.Id">
+                                                <i class="fa fa-trash"></i> Sil
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div><!-- .animated -->
+</div><!-- .content -->
+
+<!-- Modals -->
+<!-- SLider Ekle Modalı -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Create">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="createModalLabel">
+                        <i class="fa fa-plus-circle me-2"></i>Yeni Slider Ekle
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-bold">Title</label>
+                        <input type="text" class="form-control" id="title" name="Title"
+                            placeholder="Slider başlığı giriniz" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-bold">Description</label>
+                        <input type="text" class="form-control" id="description" name="Description"
+                            placeholder="Slider tanıtımını giriniz" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="order" class="form-label fw-bold">Order</label>
+                        <input type="text" class="form-control" id="order" name="Order"
+                            placeholder="Slider sırasını giriniz" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="isActive" class="form-label fw-bold">Aktif mi?</label>
+                        <select class="form-select" id="isActive" name="IsActive">
+                            <option value="true">Evet</option>
+                            <option value="false">Hayır</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="borderColor" class="form-label fw-bold">Kenarlık Rengi</label>
+                        <input type="color" class="form-control" id="borderColor" name="BorderColor" value="#e67e22" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="backgroundColor" class="form-label fw-bold">Arkaplan Rengi</label>
+                        <input type="color" class="form-control" id="backgroundColor" name="BackgroundColor"
+                            value="#e67e22" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-check me-1"></i>Ekle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Slider Düzenle Modalı -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Edit" enctype="multipart/form-data">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="editModalLabel">
+                        <i class="fa fa-edit me-2"></i>Slider Düzenle
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" name="Id" id="editSliderId" />
+                    <div class="mb-3">
+                        <label for="editTitle" class="form-label fw-bold">Title</label>
+                        <input type="text" class="form-control" id="editTitle" name="Title"
+                            placeholder="Slider başlığı giriniz" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label fw-bold">Description</label>
+                        <input type="text" class="form-control" id="editDescription" name="Description"
+                            placeholder="Slider tanıtımını giriniz" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editOrder" class="form-label fw-bold">Order</label>
+                        <input type="text" class="form-control" id="editOrder" name="Order"
+                            placeholder="Slider sırasını giriniz" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editIsActive" class="form-label fw-bold">Aktif mi?</label>
+                        <select class="form-select" id="editIsActive" name="IsActive">
+                            <option value="true">Evet</option>
+                            <option value="false">Hayır</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editBorderColor" class="form-label fw-bold">Kenarlık Rengi</label>
+                        <input type="color" class="form-control" id="editBorderColor" name="BorderColor" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editBackgroundColor" class="form-label fw-bold">Arkaplan Rengi</label>
+                        <input type="color" class="form-control" id="editBackgroundColor" name="BackgroundColor" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save me-1"></i>Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Slider Delete Modalı -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Delete">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        <i class="fa fa-trash me-2"></i>Silme Onayı
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <p id="modalText" class="fs-5 text-center">
+                        Bu slider'ı silmek istediğinize emin misiniz?
+                    </p>
+                    <input type="hidden" name="Id" id="deleteSliderId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash me-1"></i>Sil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- .Modals -->

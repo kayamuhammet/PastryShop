@@ -1,0 +1,147 @@
+@model IEnumerable<PastryShop.Models.Order>
+
+@{
+    ViewData["Title"] = "Sipariş Listesi";
+}
+
+
+<div class="breadcrumbs">
+        <div class="breadcrumbs-inner">
+            <div class="row m-0">
+                <div class="col-sm-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>SİPARİŞLER YÖNETİMİ</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="page-header float-right">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Admin</a></li>
+                                <li class="breadcrumb-item"><a asp-controller="Order" asp-action="Index">Sipariş</a></li>
+                                <li class="breadcrumb-item active">Tablo</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="container mt-4">
+    <h2>Sipariş Listesi</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Sipariş No</th>
+                <th>Müşteri Adı</th>
+                <th>Telefon</th>
+                <th>Sipariş Tarihi</th>
+                <th>Teslim Tarihi</th>
+                <th>Durum</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.DeliveryDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        <span class="badge @(item.Status switch {
+                            OrderStatus.Beklemede => "bg-warning",
+                            OrderStatus.Onaylandı => "bg-info",
+                            OrderStatus.Hazırlanıyor => "bg-primary",
+                            OrderStatus.Tamamlandı => "bg-success",
+                            OrderStatus.İptalEdildi => "bg-danger",
+                            _ => "bg-secondary"
+                        })">@item.Status</span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderModal-@item.Id">
+                            Detaylar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+@foreach (var item in Model)
+{
+    <div class="modal fade" id="orderModal-@item.Id" tabindex="-1" aria-labelledby="orderModalLabel-@item.Id" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient" style="background: linear-gradient(90deg, #ff6b6b 0%, #ffa502 100%); color: white;">
+                    <h5 class="modal-title" id="orderModalLabel-@item.Id">Sipariş Detayları #@item.Id</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row">
+                        <dt class="col-sm-4 text-end fw-bold">Müşteri Adı:</dt>
+                        <dd class="col-sm-8">@item.CustomerName</dd>
+
+                        <dt class="col-sm-4 text-end fw-bold">Telefon:</dt>
+                        <dd class="col-sm-8">@item.PhoneNumber</dd>
+
+                        <dt class="col-sm-4 text-end fw-bold">E-mail:</dt>
+                        <dd class="col-sm-8">@item.Email</dd>
+
+                        <dt class="col-sm-4 text-end fw-bold">Pasta Detayları:</dt>
+                        <dd class="col-sm-8">@item.CakeDetails</dd>
+
+                        <dt class="col-sm-4 text-end fw-bold">Kişi Sayısı:</dt>
+                        <dd class="col-sm-8">@item.PersonCount</dd>
+
+                        <dt class="col-sm-4 text-end fw-bold">Sipariş Tarihi:</dt>
+                        <dd class="col-sm-8">@item.OrderDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4 text-end fw-bold">Teslim Tarihi:</dt>
+                        <dd class="col-sm-8">@item.DeliveryDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4 text-end fw-bold">Durum:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge @(item.Status switch {
+                                OrderStatus.Beklemede => "bg-warning",
+                                OrderStatus.Onaylandı => "bg-info",
+                                OrderStatus.Hazırlanıyor => "bg-primary",
+                                OrderStatus.Tamamlandı => "bg-success",
+                                OrderStatus.İptalEdildi => "bg-danger",
+                                _ => "bg-secondary"
+                            })">@item.Status</span>
+                        </dd>
+                    </dl>
+                    <hr />
+                    <h5 class="mb-3 text-primary"><i class="fa fa-edit me-2"></i>Durum Güncelle</h5>
+                    <form asp-action="UpdateStatus" method="post" class="row g-3 align-items-center">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <div class="col-auto">
+                            <select name="orderStatus" class="form-select">
+                                @foreach (OrderStatus orderStatus in Enum.GetValues(typeof(OrderStatus)))
+                                {
+                                    <option value="@orderStatus" selected="@(orderStatus == item.Status)">@orderStatus</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="fa fa-save me-1"></i>Güncelle
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

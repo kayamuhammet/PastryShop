@@ -1,0 +1,72 @@
+@model IEnumerable<PastryShop.Models.Comment>
+<div class="breadcrumbs">
+        <div class="breadcrumbs-inner">
+            <div class="row m-0">
+                <div class="col-sm-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>YORUM</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="page-header float-right">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Admin</a></li>
+                                <li class="breadcrumb-item"><a asp-controller="Comment" asp-action="Index">Yorum</a></li>
+                                <li class="breadcrumb-item active">Tablo</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="container mt-4">
+    <h2>Yorum Yönetimi</h2>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fotoğraf</th>
+                <th>Ad</th>
+                <th>Ürün</th>
+                <th>Yorum</th>
+                <th>Tarih</th>
+                <th>Durum</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var comment in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@(string.IsNullOrEmpty(comment.PhotoUrl) ? "/frontend-template/images/defaultUser.png" : comment.PhotoUrl)"
+                        alt="@comment.Name"
+                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                    </td>
+                    <td>@comment.Name</td>
+                    <td>@comment.Product.Title</td>
+                    <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@comment.CommentText</td>
+                    <td>@comment.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@(comment.IsApproved ? "Onaylı" : "Onay Bekliyor")</td>
+                    <td>
+                        @if (!comment.IsApproved)
+                        {
+                            <form asp-action="Approve" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@comment.Id" />
+                                <button type="submit" class="btn btn-success btn-sm">Onayla</button>
+                            </form>
+                        }
+                        <form asp-action="Delete" method="post" style="display: inline;">
+                            <input type="hidden" name="id" value="@comment.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu yorumu silmek istediğinizden emin misiniz?')">Sil</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

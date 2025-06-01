@@ -1,0 +1,229 @@
+@model IEnumerable<PastryShop.Models.FAQ>
+@{
+    ViewData["Title"] = "SSS Yönetimi";
+}
+
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>SIKÇA SORULAN SORULAR</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Admin</a></li>
+                            <li class="breadcrumb-item"><a asp-controller="FAQ" asp-action="Index">SSS</a></li>
+                            <li class="breadcrumb-item active">Tablo</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="fa fa-plus"></i> Soru Ekle
+                </button>
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">SSS Listesi</strong>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Sıra</th>
+                                    <th>Soru</th>
+                                    <th>Cevap</th>
+                                    <th>Aktif</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Order</td>
+                                        <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Question</td>
+                                        <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Answer</td>
+                                        <td>
+                                            <span class="badge bg-@(item.IsActive ? "success" : "danger")">
+                                                @(item.IsActive ? "Aktif" : "Pasif")
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-sm me-1"
+                                                data-bs-toggle="modal" data-bs-target="#editModal"
+                                                data-id="@item.Id"
+                                                data-question="@item.Question"
+                                                data-answer="@item.Answer"
+                                                data-order="@item.Order"
+                                                data-isactive="@item.IsActive">
+                                                <i class="fa fa-edit"></i> Düzenle
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                data-id="@item.Id" data-question="@item.Question">
+                                                <i class="fa fa-trash"></i> Sil
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Create">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="createModalLabel">
+                        <i class="fa fa-plus-circle me-2"></i>Yeni Soru Ekle
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Soru</label>
+                        <input type="text" class="form-control" name="Question" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Cevap</label>
+                        <textarea class="form-control" name="Answer" style="height: 200px;" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Sıra</label>
+                        <input type="number" class="form-control" name="Order" value="1" min="1" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Aktif mi?</label>
+                        <select class="form-select" name="IsActive">
+                            <option value="true">Evet</option>
+                            <option value="false">Hayır</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-check me-1"></i>Ekle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Edit">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="editModalLabel">
+                        <i class="fa fa-edit me-2"></i>Soru Düzenle
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" name="Id" id="editFaqId" />
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Soru</label>
+                        <input type="text" class="form-control" id="editQuestion" name="Question" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Cevap</label>
+                        <textarea class="form-control" id="editAnswer" name="Answer" style="height: 200px;" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Sıra</label>
+                        <input type="number" class="form-control" id="editOrder" name="Order" min="1" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Aktif mi?</label>
+                        <select class="form-select" id="editIsActive" name="IsActive">
+                            <option value="true">Evet</option>
+                            <option value="false">Hayır</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save me-1"></i>Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+            <form method="post" asp-action="Delete">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        <i class="fa fa-trash me-2"></i>Silme Onayı
+                    </h5>
+                </div>
+                <div class="modal-body p-4">
+                    <p id="deleteModalText" class="fs-5 text-center">
+                        Bu soruyu silmek istediğinize emin misiniz?
+                    </p>
+                    <input type="hidden" name="Id" id="deleteFaqId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-1"></i>Vazgeç
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash me-1"></i>Sil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Edit Modal'a veri aktarma
+        $('#editModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            $('#editFaqId').val(button.data('id'));
+            $('#editQuestion').val(button.data('question'));
+            $('#editAnswer').val(button.data('answer'));
+            $('#editOrder').val(button.data('order'));
+            $('#editIsActive').val(button.data('isactive').toString().toLowerCase());
+        });
+
+        // Delete Modal'a veri aktarma
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            $('#deleteFaqId').val(button.data('id'));
+            $('#deleteModalText').text('"' + button.data('question') + '" sorusunu silmek istediğinize emin misiniz?');
+        });
+    </script>
+}

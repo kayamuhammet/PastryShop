@@ -20,3 +20,34 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.breadcrumbs {
+    background-color: #f8f9fa;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.breadcrumbs-inner {
+    padding: 0 15px;
+}
+
+.breadcrumb {
+    background: transparent;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.page-title h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+}
+
+.swal2-select {
+  display: none !important;
+}
