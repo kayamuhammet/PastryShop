@@ -2504,3 +2504,30 @@ footer.site-footer {
     right: 20px !important; }
 
 /*# sourceMappingURL=style.css.map */
+.btn-logout {
+  background: none;
+  border: none;
+  color: #000000;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.btn-logout:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-logout i {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.btn-logout:hover i {
+  transform: rotate(180deg);
+}
