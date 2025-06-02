@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<PastryShop.Models.ApplicationUser> SignInManager
+<div id="right-panel" class="right-panel">
+    <!-- Header-->
+    <header id="header" class="header">
+        <div class="top-left">
+            <div class="navbar-header">
+                <a class="navbar-brand" asp-controller="Dashboard" asp-action="Index" asp-area="Admin">
+                    <img src="/admin-template/images/logo.png" alt="Logo">
+                </a>
+                <a class="navbar-brand hidden" asp-controller="Dashboard" asp-action="Index" asp-area="Admin">
+                    <img src="/admin-template/images/logo.png" alt="Logo">
+                </a>
+                <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
+            </div>
+        </div>
+        <div class="top-right mt-2">
+            <div class="header-menu">
+                <div class="header-left">
+                    <div>
+                        <div>
+                            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;"
+                                id="logoutForm">
+                                <button type="button" class="btn btn-danger" onclick="confirmLogout()">
+                                    <i class="fa fa-power-off"></i> Çıkış Yap
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- /#header -->
+</div>
+
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Çıkış yapmak istediğinize emin misiniz?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Evet, çıkış yap',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
+        });
+    }
+</script>
