@@ -1,0 +1,103 @@
+@model PastryShop.Models.ViewModels.DashboardViewModel
+
+<div class="content">
+    <!-- Animated -->
+    <div class="animated fadeIn">
+        <!-- Widgets  -->
+        <div class="row">
+            <!-- Toplam Sipariş Sayısı -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-1">
+                                <i class="pe-7s-cart"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">@Model.TotalOrders</span></div>
+                                    <div class="stat-heading">Toplam Sipariş</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toplam Ürün Sayısı -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-2">
+                                <i class="pe-7s-box2"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">@Model.TotalProducts</span></div>
+                                    <div class="stat-heading">Toplam Ürün</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toplam Kategori Sayısı -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-3">
+                                <i class="pe-7s-notebook"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">@Model.TotalCategories</span></div>
+                                    <div class="stat-heading">Toplam Kategori</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Son 7 Günlük Sipariş Sayısı -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-4">
+                                <i class="pe-7s-timer"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">@Model.Last7DaysOrders</span></div>
+                                    <div class="stat-heading">Son 7 Günlük Sipariş</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Widgets -->
+
+        <!-- Grafik Bölümü -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Son 7 Günlük Sipariş Grafiği</strong>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="orderChart" style="height: 300px;"></canvas>
+                        <!-- Chart verileri hidden input ile aktarılır -->
+                        <input type="hidden" id="orderChartLabels" value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.OrderChartLabels))' />
+                        <input type="hidden" id="orderChartData" value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.OrderChartData))' />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
