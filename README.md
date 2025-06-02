@@ -2,6 +2,50 @@
 
 Bu proje, bir pastanenin yönetimini sağlayan ASP.NET Core MVC tabanlı bir web uygulamasıdır. Müşterilerin ürünleri görüntüleyebileceği, sipariş verebileceği ve yorum yapabileceği bir platform sunarken, yöneticilerin de tüm süreçleri yönetebileceği kapsamlı bir yönetim paneli içermektedir.
 
+![Image](https://github.com/user-attachments/assets/30529e1b-861d-4ecf-a6b1-835e558cf8fd)
+
+
+---
+# **Sayfalar**
+
+#### Anasayfa
+![Logo](images/user_slider.png)
+![Logo](images/user_günün_tatlısı.png)
+![Logo](images/user_home_menu.png)
+![Logo](images/user_home_menu_2.png)
+![Logo](images/user_home_menu_3.png)
+![Logo](images/user_yorum_formu.png)
+![Logo](images/user_müşteri_yorum_footer.png)
+### Menu
+![Logo](images/user_menu.png)
+![Logo](images/user_menu_2.png)
+### Hakkında
+![Logo](images/user_hakkımda.png)
+### Sipariş
+![Logo](images/user_sipariş.png)
+### SSS
+![Logo](images/user_sss.png)
+
+
+## Admin
+![Logo](images/admin_giriş_yap.png)
+![Logo](images/admin_kayıt_ol.png)
+![Logo](images/admin_dashboard.png)
+![Logo](images/admin_ürün_yönetimi.png)
+![Logo](images/admin_ürün_create_modal.png)
+![Logo](images/admin_kategori.png)
+![Logo](images/admin_slider.png)
+![Logo](images/admin_günün_tatlısı.png)
+![Logo](images/admin_yorum_yönetimi.png)
+![Logo](images/admin_hakkımda.png)
+![Logo](images/admin_sipariş.png)
+![Logo](images/admin_sss.png)
+![Logo](images/admin_footer.png)
+![Logo](images/admin_sweet_alert.png)
+
+
+
+
 ## Özellikler
 
 ### Kullanıcı Tarafı
