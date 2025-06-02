@@ -1,8 +1,310 @@
-﻿@{
+﻿@model PastryShop.Models.ViewModels.HomeIndexViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<!-- slider section -->
+<section class="slider_section">
+    <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Sliders.Count; i++)
+            {
+                var slider = Model.Sliders[i];
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-7 col-lg-6">
+                                <div class="detail-box" style="
+                                            background: rgba(0,0,0,0.6);
+                                            padding: 30px;
+                                            border-radius: 15px;
+                                            border-left: 6px solid @slider.BorderColor">
+                                    <h2
+                                        style="color: #fff; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center;">
+                                        @slider.Title
+                                    </h2>
+                                    <div
+                                        style="width: 60px; height: 4px; background: @slider.BorderColor; margin-bottom: 20px;">
+                                    </div>
+                                    <p style="color: #f8f9fa; font-size: 0.9rem; line-height: 1.6;">
+                                        @slider.Description
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="container">
+            <ol class="carousel-indicators">
+                @for (int i = 0; i < Model.Sliders.Count; i++)
+                {
+                    <li data-target="#customCarousel1" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+                }
+            </ol>
+        </div>
+    </div>
+</section>
 </div>
+<!-- end slider section -->
+
+
+
+<!-- offer section -->
+<section class="offer_section layout_padding-bottom">
+    <div class="heading_container heading_center">
+        <h2>
+            Günün Tatlısı
+        </h2>
+    </div>
+    <div class="offer_container">
+        <div class="container ">
+            <div class="row">
+                @if (Model.Offers != null && Model.Offers.Count > 0)
+                {
+                    foreach (var offer in Model.Offers)
+                    {
+                        <div class="col-md-6">
+                            <div class="box h-100">
+                                <div class="img-box">
+                                    <img src="@(offer.Product.Image ?? " /frontend-template/images/default.jpg")"
+                                        class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover;"
+                                        alt="@offer.Product.Title">
+                                </div>
+                                <div class="detail-box">
+                                    <h3 class="text-center"
+                                        style="font-weight: 800; color: #a6d2ff; font-size: 1.5rem; border-bottom: 2px solid #e67e22; padding-bottom: 8px;">
+                                        @offer.Product.Title</h3>
+                                    <p class="font-italic mt-3 text-justify" style="font-size: 0.85rem;">
+                                        @offer.Product.Description
+                                    </p>
+                                    <p>
+                                        <span class="badge badge-info" style="font-size: 1rem;">
+                                            @offer.StartDate.ToString("dd.MM.yyyy")</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center">
+                        <p>Bugün için özel bir tatlı bulunmamaktadır.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end offer section -->
+
+<!-- food section -->
+<section class="food_section layout_padding-bottom">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Ürünlerimiz
+            </h2>
+        </div>
+
+        <ul class="filters_menu">
+            <li class="active" data-filter="*">Tümü</li>
+            @foreach (var category in Model.Categories)
+            {
+                <li data-filter=".@category.Name.ToLower()">@category.Name</li>
+            }
+        </ul>
+
+        <div class="filters-content">
+            <div class="row grid">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-sm-6 col-lg-4 all mb-4 @product.Category?.Name.ToLower()">
+                        <div class="box h-100"
+                            style="height: 400px; border: 2px solid #e67e22; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: all 0.3s ease; background: rgba(0,0,0,0.7);">
+                            <div class="d-flex flex-column h-100">
+                                <div class="img-box"
+                                    style="height: 250px; overflow: hidden; position: relative; border-radius: 13px 13px 0 0;">
+                                    <img src="@(product.Image ?? " /frontend-template/images/default.jpg")"
+                                        alt="@product.Title"
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div class="detail-box flex-grow-1 d-flex flex-column p-3">
+                                    <h5 class="mb-3 text-center"
+                                        style="font-weight: 600; color: #a6d2ff; font-size: 1.2rem; border-bottom: 2px solid #e67e22; padding-bottom: 8px;">
+                                        @product.Title
+                                    </h5>
+                                    <p class="mb-0"
+                                        style="font-size: 0.95rem; height: 150px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; color: #fefeff; line-height: 1.6; text-align: justify;">
+                                        @product.Description
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="btn-box">
+            <a asp-controller="Home" asp-action="Menu" asp->
+                Daha Fazla
+            </a>
+        </div>
+    </div>
+</section>
+<!-- end food section -->
+
+<!-- about section -->
+
+<section class="about_section layout_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 ">
+                <div class="img-box">
+                    <img src="@Model.About?.ImageUrl" alt="@Model.About?.Title">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <div class="heading_container">
+                        <h2>
+                            @Model.About?.Title
+                        </h2>
+                    </div>
+                    <p>
+                        @Model.About?.Description
+                    </p>
+                    <a asp-controller="Home" asp-action="About" asp->
+                        Daha Fazla
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- end about section -->
+
+<!-- comment and map section -->
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="">
+            <h2>
+                Ürünlerimiz Hakkında Görüşlerinizi Paylaşın
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <form asp-controller="Home" asp-action="AddComment" asp-area="" method="post"
+                        enctype="multipart/form-data" class="p-4 rounded shadow-sm bg-light custom-comment-form"
+                        style="max-width: 600px; margin: auto;">
+                        @Html.AntiForgeryToken()
+                        <div class="form-group mb-3">
+                            <label for="name">Adınız</label>
+                            <input type="text" class="form-control" id="name" name="Name" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="productName">Hangi ürünü değerlendireceksiniz?</label>
+                            <select class="form-control" id="productName" name="ProductId" required>
+                                <option value="">Ürün seçin</option>
+                                @foreach (var product in Model.Products)
+                                {
+                                    <option value="@product.Id">@product.Title</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="commentText">Ürün hakkındaki düşünceleriniz</label>
+                            <textarea class="form-control" id="commentText" name="CommentText" required
+                                rows="4"></textarea>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="ImageFile" class="form-label">Fotoğraf Yükleyin (İsteğe bağlı)</label>
+                            <input type="file" class="form-control" id="ImageFile" name="ImageFile" accept="image/*">
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-4 py-2">Gönder</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <p class="text-muted small">
+                        *Harita, tanıtım amaçlı olarak rastgele seçilmiş bir konumu göstermektedir. Gerçek işletme
+                        adresi değildir.
+                    </p>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d479486.8102887881!2d-122.3149173341183!3d37.86052076306688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1str!2str!4v1748011477857!5m2!1str!2str"
+                        width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end comment and map section -->
+
+<!-- client section -->
+
+<section class="client_section layout_padding-bottom">
+    <div class="container">
+        <div class="heading_container heading_center psudo_white_primary mb_45">
+            <h2>
+                Müşterilerimizin Yorumları
+            </h2>
+        </div>
+        <div class="carousel-wrap row ">
+            <div class="owl-carousel client_owl-carousel">
+                @foreach (var comment in Model.ApprovedComments)
+                {
+                    <div class="item">
+                        <div class="box">
+                            <div class="detail-box">
+                                <p>
+                                    @comment.CommentText
+                                </p>
+                                <h6>
+                                    @comment.Name
+                                </h6>
+                                <p class="badge badge-pill badge-warning">
+                                    @comment.Product.Title
+                                </p>
+                            </div>
+                            <div class="img-box">
+                                <img src="@(comment.PhotoUrl ?? "/frontend-template/images/defaultUser.png")"
+                                    alt="@comment.Name"
+                                    style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- end client section -->
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@Html.Raw(TempData["Success"])';
+            var errorMessage = '@Html.Raw(TempData["Error"])';
+
+            showSuccessMessage(successMessage);
+            showErrorMessage(errorMessage);
+        });
+    </script>
+}

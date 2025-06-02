@@ -1,0 +1,49 @@
+@model PastryShop.Models.ViewModels.MenuViewModel
+
+</div>
+<!-- food section -->
+<section class="food_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Ürünlerimiz
+            </h2>
+        </div>
+
+        <ul class="filters_menu">
+            <li class="active" data-filter="*">Tümü</li>
+            @foreach (var category in Model.Categories)
+            {
+                <li data-filter=".@category.Name.ToLower()">@category.Name</li>
+            }
+        </ul>
+
+        <div class="filters-content">
+            <div class="row grid">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-sm-6 col-lg-4 all mb-4 @product.Category?.Name.ToLower()">
+                        <div class="box h-100" style="height: 400px; border: 2px solid #e67e22; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: all 0.3s ease; background: rgba(0,0,0,0.7);">
+                            <div class="d-flex flex-column h-100">
+                                <div class="img-box" style="height: 250px; overflow: hidden; position: relative; border-radius: 13px 13px 0 0;">
+                                    <img src="@(product.Image ?? "/frontend-template/images/default.jpg")" 
+                                         alt="@product.Title" 
+                                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div class="detail-box flex-grow-1 d-flex flex-column p-3">
+                                    <h5 class="mb-3 text-center" style="font-weight: 600; color: #a6d2ff; font-size: 1.2rem; border-bottom: 2px solid #e67e22; padding-bottom: 8px;">
+                                        @product.Title
+                                    </h5>
+                                    <p class="mb-0" style="font-size: 0.95rem; height: 150px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; color: #fefeff; line-height: 1.6; text-align: justify;">
+                                        @product.Description
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end food section -->

@@ -1,0 +1,75 @@
+@model PastryShop.Models.Footer
+
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        İletişim
+                    </h4>
+                    <div class="contact_link_box">
+                        <a href="">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>
+                                @Model?.Address
+                            </span>
+                        </a>
+                        <a href="tel:@Model?.Phone">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                                @Model?.Phone
+                            </span>
+                        </a>
+                        <a href="mailto:@Model?.Email">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                                @Model?.Email
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        @Model?.CompanyName
+                    </a>
+                    <p>
+                        @Model?.Description
+                    </p>
+                    <div class="footer_social">
+                        @if (!string.IsNullOrEmpty(Model?.FacebookUrl))
+                        {
+                            <a href="@Model.FacebookUrl" target="_blank">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+                        }
+                        @if (!string.IsNullOrEmpty(Model?.InstagramUrl))
+                        {
+                            <a href="@Model.InstagramUrl" target="_blank">
+                                <i class="fa fa-instagram" aria-hidden="true"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Çalışma Saatleri
+                </h4>
+                <p>
+                    @Model?.WorkingDays
+                </p>
+                <p>
+                    @(Model?.OpeningTime.ToString(@"hh\:mm")) - @(Model?.ClosingTime.ToString(@"hh\:mm"))
+                </p>
+            </div>
+        </div>
+        <div class="footer-info">
+            <p>
+                &copy; <span id="displayYear"></span> Tüm Hakları Saklıdır<br>
+            </p>
+        </div>
+    </div>
+</footer>

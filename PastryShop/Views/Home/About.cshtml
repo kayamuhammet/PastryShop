@@ -1,0 +1,54 @@
+</div>
+@model PastryShop.Models.About
+
+
+<section class="about_section layout_padding bg-light my-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <!-- Görsel Alanı -->
+            <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.1s">
+                <div class="overflow-hidden rounded-4 shadow-lg" style="aspect-ratio: 4/3; max-height: 500px;">
+                    <img src="@Model.ImageUrl" alt="@Model.Title"
+                        class="img-fluid w-100 h-100 object-fit-cover">
+                </div>
+            </div>
+
+            <!-- İçerik Alanı -->
+            <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
+                <div class="detail-box px-4">
+                    <div class="heading_container mb-4">
+                        <h2 class="display-5 fw-semibold text-primary">
+                            @Model.Title
+                        </h2>
+                        <hr class="border border-primary opacity-50 w-25">
+                    </div>
+                    <p class="text-secondary fs-6" style="line-height: 1.8;">
+                        @Model.Description
+                    </p>
+
+                    <!-- İstatistik Kartları -->
+                    <div class="row text-center mt-5">
+                        <div class="col-4">
+                            <div class="bg-white rounded-3 shadow-sm py-4 px-2 h-100">
+                                <h3 class="text-primary mb-1">15+</h3>
+                                <small class="text-muted">Yıllık Deneyim</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="bg-white rounded-3 shadow-sm py-4 px-2 h-100">
+                                <h3 class="text-primary mb-1">9999+</h3>
+                                <small class="text-muted">Mutlu Müşteri</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="bg-white rounded-3 shadow-sm py-4 px-2 h-100">
+                                <h3 class="text-primary mb-1">99+</h3>
+                                <small class="text-muted">Ürün Çeşidi</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
